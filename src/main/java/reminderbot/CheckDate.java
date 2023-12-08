@@ -9,7 +9,7 @@ import java.util.TimerTask;
 public class CheckDate extends TimerTask {
     public void run(){
         //check the date
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<String> dates;
         //try to get the dates

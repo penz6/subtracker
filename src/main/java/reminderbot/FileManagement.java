@@ -5,6 +5,7 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class FileManagement {
     //filename
@@ -40,7 +41,7 @@ public class FileManagement {
             String trimmedLine = currentLine.trim();
             //get the index where the line splits
             int end = currentLine.indexOf("-");
-            if (trimmedLine.substring(0, end).equals(name)) continue;
+            if (trimmedLine.substring(0, end).toLowerCase().equals(name.toLowerCase(Locale.ROOT))) continue;
             bfwriter.write(currentLine + System.lineSeparator());
         }
         //rename file to current one
@@ -73,11 +74,11 @@ public class FileManagement {
     }
 
     //run through the file
-    public static String listFile() throws IOException {
+    public static ArrayList<String> listFile() throws IOException {
         BufferedReader bfreader = new BufferedReader(new FileReader(filename));
         //vars
         String currentLine;
-        String retuner = new String();
+        ArrayList<String> returner  = new ArrayList<>();
         //arraylist to contain elements
         ArrayList<String> temp = new ArrayList<>();
         //run through file
@@ -85,10 +86,12 @@ public class FileManagement {
             // trim newline when comparing with lineToRemove
             String trimmedLine = currentLine.trim();
             int end = currentLine.indexOf("-");
-            retuner = retuner + trimmedLine.substring(0,end) + " | ";
+            returner.add(trimmedLine.substring(0,end));
+            returner.add(trimmedLine.substring(end+1,currentLine.length()));
         }
         bfreader.close();
-        return retuner;
+        return returner;
 
     }
+
 }

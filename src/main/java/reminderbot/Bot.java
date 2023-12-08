@@ -7,8 +7,6 @@ import java.nio.file.Paths;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -18,7 +16,6 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import reminderbot.CheckDate;
 
 
 //we need the listener adapter to listen for events
@@ -50,7 +47,7 @@ public class Bot extends ListenerAdapter {
 		homelab.updateCommands().addCommands(Commands.slash("ping", "Tests if the bot is working"),
 				Commands.slash("newsubscription", "Add a new subscription to track").
 						addOption(OptionType.STRING, "name", "What to name the subscription")
-						.addOption(OptionType.STRING, "date","Format the date as dd/MM"),
+						.addOption(OptionType.STRING, "date","Format the date as dd/MM/yyyy"),
 				Commands.slash("deletesubscription","Remove a subscription")
 						.addOption(OptionType.STRING,"name","the name of the subscription to remove"),
 				Commands.slash("list","Lists events")).queue();
@@ -78,13 +75,12 @@ public class Bot extends ListenerAdapter {
 			}
 			event.reply("Done!").queue();
 		}else if(event.getName().equals("list")){
-			String list = new String();
+			String list;
 			try {
-				list = FileManagement.listFile();
+				event.replyEmbeds(Embeds.allreminders(FileManagement.listFile())).queue();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-			event.reply(list).queue();
 		}
 	}
 	//start timing
